@@ -7,7 +7,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -33,8 +36,6 @@ namespace QuickSearchFiles.UI
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            string fileContent = new WebClient().DownloadString(@"https://github.com/scottdf93/QuickSearchFiles/blob/master/Version");
-
             if (fileSearcher != null)
             {
                 if (this.ValidateData())
@@ -48,6 +49,53 @@ namespace QuickSearchFiles.UI
                     Thread thread = new Thread(this.Search);
                     thread.Start();
                 }
+            }
+        }
+
+        private void CheckForNewVersion()
+        {
+            Version currentAssemblyVersion = new Version(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion);
+
+            DownloadVersionFile();
+
+            string[] fileContents = File.ReadAllLines(@"D:\Repository\QuickSearchFiles\QuickSearchFiles\QuickSearchFiles.UI\QuickSearchFiles.UI\bin\Debug\Version.txt");
+
+            string versionLine = fileContents.First(x => x.TrimStart().StartsWith("<td id=\"LC1\"")).Trim().Remove(0, 60).Replace("</td>", "");
+
+            Version newAssemblyVersion = new Version(versionLine);
+
+            int compareToResult = currentAssemblyVersion.CompareTo(newAssemblyVersion);
+
+            if (compareToResult != 0)
+            {
+                if (MessageBox.Show("New version detected, open the download link?", "Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    Process.Start("https://github.com/scottdf93/QuickSearchFiles");
+                }
+            }
+        }
+
+        private void DownloadVersionFile()
+        {
+            string remoteUri = "https://github.com/scottdf93/QuickSearchFiles/blob/master/";
+            string fileName = "Version.txt", myStringWebResource = null;
+                        
+            WebClient myWebClient = new WebClient();
+            myStringWebResource = remoteUri + fileName;
+            myWebClient.DownloadFile(myStringWebResource, fileName);
+        }
+
+        private bool IsInternetAvailable()
+        {
+            try
+            {
+                Ping ping = new Ping();
+                PingReply reply = ping.Send("8.8.8.8", 1000, new byte[32], new PingOptions());
+                return (reply.Status == IPStatus.Success);
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -184,6 +232,14 @@ namespace QuickSearchFiles.UI
         private void AllFilesRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             fileType = FileType.All;
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            if (IsInternetAvailable())
+            {
+                this.CheckForNewVersion();
+            }
         }
     }
 }
