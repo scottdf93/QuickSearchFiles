@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Spire.Doc.Documents;
+using Spire.Pdf;
+using Spire.Doc.Fields;
 
 namespace QuickSearchFiles
 {
@@ -56,7 +59,7 @@ namespace QuickSearchFiles
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            string[] extensions = new[] { ".xls", ".xlsx" };
+            string[] extensions = new[] { ".xls", ".xlsx", ".xlsm" };
 
             string[] files = Directory.GetFiles(searchOptions.SearchParameters.DirectoryToSearchIn).Where(file => extensions.Contains(Path.GetExtension(file))).ToArray();
 
@@ -64,140 +67,103 @@ namespace QuickSearchFiles
 
             foreach (string file in files)
             {
-                if (Path.GetExtension(file) == ".xlsx")
+                Workbook workbook = new Workbook();
+                workbook.LoadFromFile(file);
+
+                for (int i = 0; i < workbook.Worksheets.Count; i++)
                 {
-                    using (ExcelPackage package = new ExcelPackage(file))
+                    for (int row = 1; row < workbook.Worksheets[i].Rows.Length + 1; row++)
                     {
-                        for (int i = 0; i < package.Workbook.Worksheets.Count; i++)
+                        bool[] foundWords = new bool[wordsToFind.Length];
+
+                        for (int word = 0; word < wordsToFind.Length; word++)
                         {
-                            int colCount = package.Workbook.Worksheets[i].Dimension.End.Column;
-                            int rowCount = package.Workbook.Worksheets[i].Dimension.End.Row;
-
-                            for (int row = 1; row < rowCount + 1; row++)
+                            for (int col = 1; col < workbook.Worksheets[i].Columns.Length + 1; col++)
                             {
-                                bool[] foundWords = new bool[wordsToFind.Length];
-
-                                for (int word = 0; word < wordsToFind.Length; word++)
+                                if (workbook.Worksheets[i].Range[row, col].Value != null)
                                 {
-                                    for (int col = 1; col < colCount + 1; col++)
+                                    if (!searchOptions.SearchOptions.MatchWholeWord && !searchOptions.SearchOptions.IgnoreCase)
                                     {
-                                        if (package.Workbook.Worksheets[i].Cells[row, col].Value != null)
+                                        if (workbook.Worksheets[i].Range[row, col].Value.ToString().Contains(wordsToFind[word]))
                                         {
-                                            if (!searchOptions.SearchOptions.MatchWholeWord && !searchOptions.SearchOptions.IgnoreCase)
-                                            {
-                                                if (package.Workbook.Worksheets[i].Cells[row, col].Value.ToString().Contains(wordsToFind[word]))
-                                                {
-                                                    foundWords[word] = true;
-                                                }
-                                            }
-                                            else if (!searchOptions.SearchOptions.MatchWholeWord && searchOptions.SearchOptions.IgnoreCase)
-                                            {
-                                                if (package.Workbook.Worksheets[i].Cells[row, col].Value.ToString().ToLower().Contains(wordsToFind[word].ToLower()))
-                                                {
-                                                    foundWords[word] = true;
-                                                }
-                                            }
-                                            else if (searchOptions.SearchOptions.MatchWholeWord && !searchOptions.SearchOptions.IgnoreCase)
-                                            {
-                                                if (package.Workbook.Worksheets[i].Cells[row, col].Value.ToString() == wordsToFind[word])
-                                                {
-                                                    foundWords[word] = true;
-                                                }
-                                            }
-                                            else if (searchOptions.SearchOptions.MatchWholeWord && searchOptions.SearchOptions.IgnoreCase)
-                                            {
-                                                if (package.Workbook.Worksheets[i].Cells[row, col].Value.ToString().ToLower() == wordsToFind[word].ToLower())
-                                                {
-                                                    foundWords[word] = true;
-                                                }
-                                            }
+                                            foundWords[word] = true;
                                         }
                                     }
-                                }
-
-                                if (foundWords.All(x => x == true))
-                                {
-                                    results.Add(new SearchResults()
+                                    else if (!searchOptions.SearchOptions.MatchWholeWord && searchOptions.SearchOptions.IgnoreCase)
                                     {
-                                        Row = row,
-                                        File = file
-                                    });
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (Path.GetExtension(file) == ".xls")
-                {
-                    Workbook workbook = new Workbook();
-                    workbook.LoadFromFile(file);
-
-                    for (int i = 0; i < workbook.Worksheets.Count; i++)
-                    {
-                        for (int row = 1; row < workbook.Worksheets[i].Rows.Length+1; row++)
-                        {
-                            bool[] foundWords = new bool[wordsToFind.Length];
-
-                            for (int word = 0; word < wordsToFind.Length; word++)
-                            {
-                                for (int col = 1; col < workbook.Worksheets[i].Columns.Length+1; col++)
-                                {
-                                    if (workbook.Worksheets[i].Range[row,col].Value != null)
+                                        if (workbook.Worksheets[i].Range[row, col].Value.ToString().ToLower().Contains(wordsToFind[word].ToLower()))
+                                        {
+                                            foundWords[word] = true;
+                                        }
+                                    }
+                                    else if (searchOptions.SearchOptions.MatchWholeWord && !searchOptions.SearchOptions.IgnoreCase)
                                     {
-                                        if (!searchOptions.SearchOptions.MatchWholeWord && !searchOptions.SearchOptions.IgnoreCase)
+                                        if (workbook.Worksheets[i].Range[row, col].Value.ToString() == wordsToFind[word])
                                         {
-                                            if (workbook.Worksheets[i].Range[row, col].Value.ToString().Contains(wordsToFind[word]))
-                                            {
-                                                foundWords[word] = true;
-                                            }
+                                            foundWords[word] = true;
                                         }
-                                        else if (!searchOptions.SearchOptions.MatchWholeWord && searchOptions.SearchOptions.IgnoreCase)
+                                    }
+                                    else if (searchOptions.SearchOptions.MatchWholeWord && searchOptions.SearchOptions.IgnoreCase)
+                                    {
+                                        if (workbook.Worksheets[i].Range[row, col].Value.ToString().ToLower() == wordsToFind[word].ToLower())
                                         {
-                                            if (workbook.Worksheets[i].Range[row, col].Value.ToString().ToLower().Contains(wordsToFind[word].ToLower()))
-                                            {
-                                                foundWords[word] = true;
-                                            }
-                                        }
-                                        else if (searchOptions.SearchOptions.MatchWholeWord && !searchOptions.SearchOptions.IgnoreCase)
-                                        {
-                                            if (workbook.Worksheets[i].Range[row, col].Value.ToString() == wordsToFind[word])
-                                            {
-                                                foundWords[word] = true;
-                                            }
-                                        }
-                                        else if (searchOptions.SearchOptions.MatchWholeWord && searchOptions.SearchOptions.IgnoreCase)
-                                        {
-                                            if (workbook.Worksheets[i].Range[row, col].Value.ToString().ToLower() == wordsToFind[word].ToLower())
-                                            {
-                                                foundWords[word] = true;
-                                            }
+                                            foundWords[word] = true;
                                         }
                                     }
                                 }
                             }
+                        }
 
-                            if (foundWords.All(x => x == true))
+                        if (foundWords.All(x => x == true))
+                        {
+                            results.Add(new SearchResults()
                             {
-                                results.Add(new SearchResults()
-                                {
-                                    Row = row,
-                                    File = file
-                                });
-                            }
+                                Row = row.ToString(),
+                                File = file
+                            });
                         }
                     }
                 }
+
             }
         }
 
         private void SearchWord(SearchObject searchOptions)
         {
-            throw new NotImplementedException("This function has not yet been implemented");
+            string[] extensions = new[] { ".doc", ".docx" };
+
+            string[] files = Directory.GetFiles(searchOptions.SearchParameters.DirectoryToSearchIn).Where(file => extensions.Contains(Path.GetExtension(file))).ToArray();
+
+            string[] wordsToFind = searchOptions.SearchParameters.StringToSearchFor.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string file in files)
+            {
+                Spire.Pdf.PdfDocument pdfDocument = new PdfDocument();
+
+                Document document = new Document();
+                document.LoadFromFile(file);
+
+                bool[] foundWords = new bool[wordsToFind.Length];
+
+                for (int word = 0; word < wordsToFind.Length; word++)
+                {
+                    TextSelection[] text = document.FindAllString(wordsToFind[word], searchOptions.SearchOptions.IgnoreCase, searchOptions.SearchOptions.MatchWholeWord);
+
+                    foreach (TextSelection selection in text)
+                    {
+                        results.Add(new SearchResults()
+                        {
+                            Row = "Text found but could not find location",
+                            File = file
+                        });
+                    }
+                }
+            }
         }
 
         private void SearchGenericText(SearchObject searchOptions)
         {
-            throw new NotImplementedException("This function has not yet been implemented");
+            //throw new NotImplementedException("This function has not yet been implemented");
         }
     }
 }

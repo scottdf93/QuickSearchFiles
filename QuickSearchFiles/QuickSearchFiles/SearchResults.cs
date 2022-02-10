@@ -14,7 +14,7 @@ namespace QuickSearchFiles
 		/// <summary>
 		/// The row/line the text was found
 		/// </summary>
-		public int Row;
+		public string Row;
 
 		/// <summary>
 		/// The file found in

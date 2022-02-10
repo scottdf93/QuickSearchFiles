@@ -201,8 +201,8 @@ namespace QuickSearchFiles.UI
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.SearchForTextBox);
             this.groupBox4.Controls.Add(this.label1);
-            this.groupBox4.Controls.Add(this.SearchingPictureBox);
             this.groupBox4.Controls.Add(this.ResultListView);
+            this.groupBox4.Controls.Add(this.SearchingPictureBox);
             this.groupBox4.Location = new System.Drawing.Point(191, 14);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox4.Name = "groupBox4";
@@ -329,13 +329,13 @@ namespace QuickSearchFiles.UI
             // 
             this.olvColumn1.AspectName = "Row";
             this.olvColumn1.Text = "Row/Line number";
-            this.olvColumn1.Width = 146;
+            this.olvColumn1.Width = 265;
             // 
             // olvColumn2
             // 
             this.olvColumn2.AspectName = "File";
             this.olvColumn2.Text = "File";
-            this.olvColumn2.Width = 961;
+            this.olvColumn2.Width = 847;
             // 
             // MainForm
             // 
