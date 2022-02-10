@@ -54,14 +54,13 @@ namespace QuickSearchFiles.UI
 
         private void CheckForNewVersion()
         {
-            Version currentAssemblyVersion = new Version(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion);
-
             DownloadVersionFile();
 
             string[] fileContents = File.ReadAllLines(@"D:\Repository\QuickSearchFiles\QuickSearchFiles\QuickSearchFiles.UI\QuickSearchFiles.UI\bin\Debug\Version.txt");
 
             string versionLine = fileContents.First(x => x.TrimStart().StartsWith("<td id=\"LC1\"")).Trim().Remove(0, 60).Replace("</td>", "");
 
+            Version currentAssemblyVersion = new Version(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion);
             Version newAssemblyVersion = new Version(versionLine);
 
             int compareToResult = currentAssemblyVersion.CompareTo(newAssemblyVersion);

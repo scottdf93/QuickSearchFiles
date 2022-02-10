@@ -129,18 +129,60 @@ namespace QuickSearchFiles
                 }
                 else if (Path.GetExtension(file) == ".xls")
                 {
-                    throw new NotImplementedException("This function has not yet been implemented");
-
                     Workbook workbook = new Workbook();
                     workbook.LoadFromFile(file);
 
                     for (int i = 0; i < workbook.Worksheets.Count; i++)
                     {
-                        foreach (CellRange range in workbook.Worksheets.FindAllString(searchOptions.SearchParameters.StringToSearchFor, true, true))
+                        for (int row = 1; row < workbook.Worksheets[i].Rows.Length+1; row++)
                         {
-                            foreach (CellRange cell in range.Rows)
-                            {
+                            bool[] foundWords = new bool[wordsToFind.Length];
 
+                            for (int word = 0; word < wordsToFind.Length; word++)
+                            {
+                                for (int col = 1; col < workbook.Worksheets[i].Columns.Length+1; col++)
+                                {
+                                    if (workbook.Worksheets[i].Range[row,col].Value != null)
+                                    {
+                                        if (!searchOptions.SearchOptions.MatchWholeWord && !searchOptions.SearchOptions.IgnoreCase)
+                                        {
+                                            if (workbook.Worksheets[i].Range[row, col].Value.ToString().Contains(wordsToFind[word]))
+                                            {
+                                                foundWords[word] = true;
+                                            }
+                                        }
+                                        else if (!searchOptions.SearchOptions.MatchWholeWord && searchOptions.SearchOptions.IgnoreCase)
+                                        {
+                                            if (workbook.Worksheets[i].Range[row, col].Value.ToString().ToLower().Contains(wordsToFind[word].ToLower()))
+                                            {
+                                                foundWords[word] = true;
+                                            }
+                                        }
+                                        else if (searchOptions.SearchOptions.MatchWholeWord && !searchOptions.SearchOptions.IgnoreCase)
+                                        {
+                                            if (workbook.Worksheets[i].Range[row, col].Value.ToString() == wordsToFind[word])
+                                            {
+                                                foundWords[word] = true;
+                                            }
+                                        }
+                                        else if (searchOptions.SearchOptions.MatchWholeWord && searchOptions.SearchOptions.IgnoreCase)
+                                        {
+                                            if (workbook.Worksheets[i].Range[row, col].Value.ToString().ToLower() == wordsToFind[word].ToLower())
+                                            {
+                                                foundWords[word] = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (foundWords.All(x => x == true))
+                            {
+                                results.Add(new SearchResults()
+                                {
+                                    Row = row,
+                                    File = file
+                                });
                             }
                         }
                     }
