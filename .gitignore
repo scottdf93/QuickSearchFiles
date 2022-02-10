@@ -1,0 +1,20 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/QuickSearchFiles/v16
+/.vs
+/QuickSearchFiles.UI/.vs/QuickSearchFiles.UI/v16
+/QuickSearchFiles.UI/QuickSearchFiles.UI/obj/Debug
+/QuickSearchFiles/.vs/QuickSearchFiles/v16
+/QuickSearchFiles/QuickSearchFiles/obj/Debug
+/QuickSearchFilesSolution/.vs/QuickSearchFilesSolution/v16
+/QuickSearchFiles/QuickSearchFiles.UI/.vs/QuickSearchFiles.UI/v16
+/QuickSearchFiles/QuickSearchFiles.UI/QuickSearchFiles.UI/obj/Debug
+/QuickSearchFiles/QuickSearchFiles/bin/Debug
+/QuickSearchFiles/QuickSearchFiles.UI/QuickSearchFiles.UI/bin/Debug
+/QuickSearchFiles/packages/Spire.XLS.12.1.0
+/QuickSearchFiles/packages/Spire.Doc.10.1.14
+/QuickSearchFiles/packages
+/QuickSearchFiles/QuickSearchFiles.UI/QuickSearchFiles.UI/obj/Release
+/QuickSearchFiles/QuickSearchFiles/obj/Release

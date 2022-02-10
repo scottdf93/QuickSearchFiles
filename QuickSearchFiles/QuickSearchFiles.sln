@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickSearchFiles.UI", "QuickSearchFiles.UI\QuickSearchFiles.UI\QuickSearchFiles.UI.csproj", "{18F9E073-3790-4D08-84DC-9D1904CCE635}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickSearchFiles", "QuickSearchFiles\QuickSearchFiles.csproj", "{3C62319B-CE8E-4963-8C8C-554A1F249850}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18F9E073-3790-4D08-84DC-9D1904CCE635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18F9E073-3790-4D08-84DC-9D1904CCE635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18F9E073-3790-4D08-84DC-9D1904CCE635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18F9E073-3790-4D08-84DC-9D1904CCE635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C62319B-CE8E-4963-8C8C-554A1F249850}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C62319B-CE8E-4963-8C8C-554A1F249850}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C62319B-CE8E-4963-8C8C-554A1F249850}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C62319B-CE8E-4963-8C8C-554A1F249850}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {749FCEA1-7236-49D8-BB39-EF5711C21ED0}
+	EndGlobalSection
+EndGlobal
