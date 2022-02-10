@@ -138,8 +138,6 @@ namespace QuickSearchFiles
 
             foreach (string file in files)
             {
-                Spire.Pdf.PdfDocument pdfDocument = new PdfDocument();
-
                 Document document = new Document();
                 document.LoadFromFile(file);
 
@@ -163,7 +161,62 @@ namespace QuickSearchFiles
 
         private void SearchGenericText(SearchObject searchOptions)
         {
-            //throw new NotImplementedException("This function has not yet been implemented");
+            string[] extensions = new[] { ".txt", ".csv" };
+
+            string[] files = Directory.GetFiles(searchOptions.SearchParameters.DirectoryToSearchIn).Where(file => extensions.Contains(Path.GetExtension(file))).ToArray();
+
+            string[] wordsToFind = searchOptions.SearchParameters.StringToSearchFor.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string file in files)
+            {
+                bool[] foundWords = new bool[wordsToFind.Length];
+
+                for (int word = 0; word < wordsToFind.Length; word++)
+                {
+                    string[] fileLines = File.ReadAllLines(file);
+
+                    for (int line = 0; line < fileLines.Count(); line++)
+                    {
+                        if (!searchOptions.SearchOptions.MatchWholeWord && !searchOptions.SearchOptions.IgnoreCase)
+                        {
+                            if (fileLines[line].Contains(wordsToFind[word]))
+                            {
+                                foundWords[word] = true;
+                            }
+                        }
+                        else if (!searchOptions.SearchOptions.MatchWholeWord && searchOptions.SearchOptions.IgnoreCase)
+                        {
+                            if (fileLines[line].ToLower().Contains(wordsToFind[word].ToLower()))
+                            {
+                                foundWords[word] = true;
+                            }
+                        }
+                        else if (searchOptions.SearchOptions.MatchWholeWord && !searchOptions.SearchOptions.IgnoreCase)
+                        {
+                            if (fileLines[line].ToString() == wordsToFind[word])
+                            {
+                                foundWords[word] = true;
+                            }
+                        }
+                        else if (searchOptions.SearchOptions.MatchWholeWord && searchOptions.SearchOptions.IgnoreCase)
+                        {
+                            if (fileLines[line].ToLower() == wordsToFind[word].ToLower())
+                            {
+                                foundWords[word] = true;
+                            }
+                        }
+                    }
+                }
+
+                if (foundWords.All(x => x == true))
+                {
+                    results.Add(new SearchResults()
+                    {
+                        Row = line.ToString(),
+                        File = file
+                    });
+                }
+            }
         }
     }
 }
