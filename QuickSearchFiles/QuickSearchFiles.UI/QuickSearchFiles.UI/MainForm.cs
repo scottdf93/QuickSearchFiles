@@ -79,7 +79,7 @@ namespace QuickSearchFiles.UI
             {
                 if (MessageBox.Show("New version detected, open the download link?", "Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
-                    Process.Start("https://github.com/scottdf93/QuickSearchFiles");
+                    Process.Start("https://github.com/scottdf93/QuickSearchFiles/tree/master/Installer");
                 }
             }
         }
