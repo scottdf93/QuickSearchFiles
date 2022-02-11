@@ -75,6 +75,8 @@ namespace QuickSearchFiles.UI
 
             int compareToResult = currentAssemblyVersion.CompareTo(newAssemblyVersion);
 
+            this.Text = "Quick file searcher v" + currentAssemblyVersion.ToString();
+
             if (compareToResult != 0)
             {
                 if (MessageBox.Show("New version detected, open the download link?", "Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
