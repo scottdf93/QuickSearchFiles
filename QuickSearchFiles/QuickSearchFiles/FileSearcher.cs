@@ -169,13 +169,15 @@ namespace QuickSearchFiles
 
             foreach (string file in files)
             {
-                bool[] foundWords = new bool[wordsToFind.Length];
+                int lineFound = 0;
 
-                for (int word = 0; word < wordsToFind.Length; word++)
+                string[] fileLines = File.ReadAllLines(file);
+
+                for (int line = 0; line < fileLines.Count(); line++)
                 {
-                    string[] fileLines = File.ReadAllLines(file);
+                    bool[] foundWords = new bool[wordsToFind.Length];
 
-                    for (int line = 0; line < fileLines.Count(); line++)
+                    for (int word = 0; word < wordsToFind.Length; word++)
                     {
                         if (!searchOptions.SearchOptions.MatchWholeWord && !searchOptions.SearchOptions.IgnoreCase)
                         {
@@ -206,15 +208,15 @@ namespace QuickSearchFiles
                             }
                         }
                     }
-                }
 
-                if (foundWords.All(x => x == true))
-                {
-                    results.Add(new SearchResults()
+                    if (foundWords.All(x => x == true))
                     {
-                        Row = line.ToString(),
-                        File = file
-                    });
+                        results.Add(new SearchResults()
+                        {
+                            Row = line.ToString(),
+                            File = file
+                        });
+                    }
                 }
             }
         }

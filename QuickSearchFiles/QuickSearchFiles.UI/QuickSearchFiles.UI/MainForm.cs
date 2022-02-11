@@ -56,7 +56,17 @@ namespace QuickSearchFiles.UI
         {
             DownloadVersionFile();
 
-            string[] fileContents = File.ReadAllLines(@"D:\Repository\QuickSearchFiles\QuickSearchFiles\QuickSearchFiles.UI\QuickSearchFiles.UI\bin\Debug\Version.txt");
+            if (!Directory.Exists(@"C:\temp"))
+            {
+                Directory.CreateDirectory(@"C:\temp");
+            }
+
+            if (!File.Exists(@"C:\temp\Version.txt"))
+            {
+                return;
+            }
+
+            string[] fileContents = File.ReadAllLines(@"C:\temp\Version.txt");
 
             string versionLine = fileContents.First(x => x.TrimStart().StartsWith("<td id=\"LC1\"")).Trim().Remove(0, 60).Replace("</td>", "");
 
@@ -76,12 +86,8 @@ namespace QuickSearchFiles.UI
 
         private void DownloadVersionFile()
         {
-            string remoteUri = "https://github.com/scottdf93/QuickSearchFiles/blob/master/";
-            string fileName = "Version.txt", myStringWebResource = null;
-                        
             WebClient myWebClient = new WebClient();
-            myStringWebResource = remoteUri + fileName;
-            myWebClient.DownloadFile(myStringWebResource, fileName);
+            myWebClient.DownloadFile(new System.Uri("https://github.com/scottdf93/QuickSearchFiles/blob/master/Version.txt"), @"C:\temp\Version.txt");
         }
 
         private bool IsInternetAvailable()

@@ -49,16 +49,16 @@ namespace QuickSearchFiles.UI
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.SearchForTextBox = new System.Windows.Forms.TextBox();
-            this.SearchingPictureBox = new System.Windows.Forms.PictureBox();
             this.ResultListView = new BrightIdeasSoftware.FastObjectListView();
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.SearchingPictureBox = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SearchingPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ResultListView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SearchingPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -201,8 +201,8 @@ namespace QuickSearchFiles.UI
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.SearchForTextBox);
             this.groupBox4.Controls.Add(this.label1);
-            this.groupBox4.Controls.Add(this.ResultListView);
             this.groupBox4.Controls.Add(this.SearchingPictureBox);
+            this.groupBox4.Controls.Add(this.ResultListView);
             this.groupBox4.Location = new System.Drawing.Point(191, 14);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox4.Name = "groupBox4";
@@ -282,20 +282,6 @@ namespace QuickSearchFiles.UI
             this.SearchForTextBox.Size = new System.Drawing.Size(1034, 26);
             this.SearchForTextBox.TabIndex = 4;
             // 
-            // SearchingPictureBox
-            // 
-            this.SearchingPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.SearchingPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("SearchingPictureBox.Image")));
-            this.SearchingPictureBox.Location = new System.Drawing.Point(14, 138);
-            this.SearchingPictureBox.Name = "SearchingPictureBox";
-            this.SearchingPictureBox.Size = new System.Drawing.Size(1114, 452);
-            this.SearchingPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.SearchingPictureBox.TabIndex = 40;
-            this.SearchingPictureBox.TabStop = false;
-            this.SearchingPictureBox.Visible = false;
-            // 
             // ResultListView
             // 
             this.ResultListView.AllColumns.Add(this.olvColumn1);
@@ -337,6 +323,20 @@ namespace QuickSearchFiles.UI
             this.olvColumn2.Text = "File";
             this.olvColumn2.Width = 847;
             // 
+            // SearchingPictureBox
+            // 
+            this.SearchingPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SearchingPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("SearchingPictureBox.Image")));
+            this.SearchingPictureBox.Location = new System.Drawing.Point(14, 138);
+            this.SearchingPictureBox.Name = "SearchingPictureBox";
+            this.SearchingPictureBox.Size = new System.Drawing.Size(1114, 452);
+            this.SearchingPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.SearchingPictureBox.TabIndex = 40;
+            this.SearchingPictureBox.TabStop = false;
+            this.SearchingPictureBox.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -361,8 +361,8 @@ namespace QuickSearchFiles.UI
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SearchingPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ResultListView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SearchingPictureBox)).EndInit();
             this.ResumeLayout(false);
 
 		}
