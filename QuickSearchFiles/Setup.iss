@@ -6,7 +6,7 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{18f9e073-3790-4d08-84dc-9d1904cce635}}
-AppName=AlphrManufacturingAndPurchasing
+AppName=QuickSearchFiles
 AppVersion=1.2.0.0
 ;
 AppPublisher=Scott Fitzpatrick
